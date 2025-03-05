@@ -4,7 +4,8 @@ import {PiInstagramLogo} from "react-icons/pi";
 import React from "react";
 import {Carousel} from "antd";
 import {routePaths} from "@/utils";
-import {FaBars} from "react-icons/fa";
+import {HeaderMenu} from "./menu";
+import {LayoutRoutes} from "./routes";
 
 const contentStyle: React.CSSProperties = {
 	margin: 0,
@@ -19,16 +20,18 @@ const showcaseImageUrl = `https://s3-alpha-sig.figma.com/img/61ae/e255/4806cefb0
 export const HeaderComponent = () => {
 	return (
 		<header className="pb-[20em]">
-			<nav className="bg-[#263238] px-10 py-3 flex items-center justify-between gap-4 max-[360px]:text-xs">
+			<nav className="bg-[#263238] px-8 py-3 flex items-center justify-between gap-4 max-[360px]:text-xs">
 				<div className="flex items-center gap-12">
-					<Image
-						src={"/imgs/logo.svg"}
-						alt="logo image"
-						width={200}
-						height={200}
-						className="w-[5em] h-[4.5em] max-sm:text-xs max-[450px]:text-[0.55em]"
-						priority
-					/>
+					<Link href={`/`}>
+						<Image
+							src={"/imgs/logo.svg"}
+							alt="logo image"
+							width={200}
+							height={200}
+							className="w-[5em] h-[4.5em] max-sm:text-xs max-[450px]:text-[0.55em]"
+							priority
+						/>
+					</Link>
 					<Link
 						target="_blank"
 						href={`https://yandex.uz/maps/10335/tashkent/?feedback=object%2Fadd&feedback-context=map.controls&ll=69.244953%2C41.304595&z=18`}
@@ -47,12 +50,15 @@ export const HeaderComponent = () => {
 					</div>
 				</div>
 				<div className="flex items-center gap-6">
-					<div className="py-2 px-5 rounded-full text-[0.9em] bg-primary text-white cursor-pointer hidden max-[830px]:block">
+					<div className="py-2 px-85 rounded-full text-[0.9em] bg-primary text-white cursor-pointer hidden max-[830px]:block">
 						Войти
 					</div>
-					<FaBars className="text-2xl text-primary hidden max-[830px]:block" />
+					<HeaderMenu />
 					<div className="w-8 h-8 rounded-full flex hover:bg-primary cursor-pointer items-center justify-center bg-[rgb(168,173,175)] max-[830px]:hidden">
-						<PiInstagramLogo className="text-xl" />
+						<Link
+							href={`https://www.instagram.com/magic_cinema_uz/?igsh=MTk4YXl1MHpubjY3aA%3D%3D#`}>
+							<PiInstagramLogo className="text-xl" />
+						</Link>
 					</div>
 					<Link
 						href={`https://kinokassa.ru/refund?cinemaID=8211`}
@@ -63,62 +69,28 @@ export const HeaderComponent = () => {
 				</div>
 			</nav>
 			<nav>
-				{/* <div className="w-full h-full bg-black py-3 px-10 text-white">
-					<Link
-						target="_blank"
-						href={`https://yandex.uz/maps/10335/tashkent/?feedback=object%2Fadd&feedback-context=map.controls&ll=69.244953%2C41.304595&z=18`}
-						className="text-white hidden max-[830px]:block">
-						<p className="text-[1.15em]">Ташкент</p>
-						<p className="font-light text-xs text-gray-300">
-							Парк Magic City, <br />
-							ул. Бабура, 174
-						</p>
-						<div className=" max-[830px]:block hidden mt-5">
-							<a className="text-white font-medium" href={`tel:+998712052050`}>
-								+998(71) 2052050
-							</a>
-							<p className="font-light text-xs text-gray-300">Для Информации</p>
-						</div>
-						<div className="max-[830px]:flex hidden flex-col">
-							<div className="py-2 px-5 rounded-full text-[0.9em] bg-primary text-white cursor-pointer">
-								Войти
-							</div>
-							<div className="py-2 px-5 rounded-full text-[0.9em] bg-primary text-white cursor-pointer">
-								Написать отзыв
-							</div>
-						</div>
-					</Link>
-				</div> */}
 				<Carousel arrows infinite={false}>
 					{Array.from({length: 4}).map((_, idx) => (
-						<div key={idx}>
-							<h3 style={contentStyle}>
-								<Image
-									src={showcaseImageUrl}
-									alt="showcase movie image"
-									width={1200}
-									height={1200}
-									className="w-full object-cover h-full"
-								/>
-							</h3>
+						<div key={idx} style={contentStyle}>
+							<Image
+								src={showcaseImageUrl}
+								alt="showcase movie image"
+								width={1200}
+								height={1200}
+								className="w-full object-cover h-full"
+							/>
 						</div>
 					))}
 				</Carousel>
 			</nav>
-			<nav className="">
-				<div className="px-10 py-4 flex items-center gap-6 border-b border-gray-300 max-[560px]:overflow-x-auto max-[560px]:whitespace-nowrap">
-					{routePaths.map((route, idx) => (
-						<div key={idx} className="cursor-pointer">
-							{route}
-						</div>
-					))}
-					<div className="py-2 px-5 rounded-full text-[0.9em] bg-primary text-white cursor-pointer max-[830px]:hidden">
-						Войти
-					</div>
-					<div className="py-2 px-5 rounded-full text-[0.9em] bg-primary text-white cursor-pointer max-[830px]:hidden">
-						Написать отзыв
-					</div>
-				</div>
+			<LayoutRoutes />
+			<nav className="w-full bg-[#F2F2F5] px-8 py-2 flex items-center gap-4">
+				<p className="py-2 px-5 rounded-full text-[0.9em] bg-primary text-white cursor-pointer">
+					Сегодня
+				</p>
+				<p className="py-2 px-5 rounded-full text-[0.9em] bg-primary text-white cursor-pointer">
+					Завтра
+				</p>
 			</nav>
 		</header>
 	);

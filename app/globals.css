@@ -35,3 +35,7 @@ body {
 	right: 40px !important;
 	scale: 1.5;
 }
+
+.tr {
+	transition: 0.4s;
+}
