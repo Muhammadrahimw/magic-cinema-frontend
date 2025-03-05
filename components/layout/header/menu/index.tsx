@@ -19,7 +19,7 @@ export const HeaderMenu = () => {
 				}`}>
 				<FaXmark
 					onClick={() => setActive(!active)}
-					className="text-4xl text-primary hidden max-[830px]:block fixed top-3 right-3"
+					className="text-4xl text-primary hidden max-[830px]:block fixed top-3 right-3 max-[360px]:top-2 max-[360px]:right-2"
 				/>
 				<Link
 					target="_blank"
@@ -37,7 +37,7 @@ export const HeaderMenu = () => {
 					</a>
 					<p className="font-light text-xs text-gray-300">Для Информации</p>
 				</div>
-				<div className="max-[830px]:flex hidden flex-col gap-4 mt-4">
+				<div className="max-[830px]:flex hidden flex-col gap-4 mt-4 text-xs">
 					<div className="py-2 rounded-full text-[0.9em] bg-primary text-white cursor-pointer flex justify-center w-[10.5em]">
 						Написать отзыв
 					</div>

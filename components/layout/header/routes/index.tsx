@@ -1,5 +1,6 @@
 "use client";
 
+import {AuthorizationComponent} from "@/components/authorization";
 import {routePaths} from "@/utils";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
@@ -23,9 +24,13 @@ export const LayoutRoutes = () => {
 						{route.label}
 					</Link>
 				))}
-				<div className="py-2 px-8 rounded-full text-[0.9em] bg-primary text-white cursor-pointer max-[830px]:hidden">
-					Войти
-				</div>
+				<AuthorizationComponent
+					trigger={
+						<div className="py-2 px-8 rounded-full text-[0.9em] bg-primary text-white cursor-pointer max-[830px]:hidden">
+							Войти
+						</div>
+					}
+				/>
 				<div className="py-2 px-8 rounded-full text-[0.9em] bg-primary text-white cursor-pointer max-[830px]:hidden">
 					Написать отзыв
 				</div>

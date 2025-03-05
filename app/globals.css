@@ -39,3 +39,11 @@ body {
 .tr {
 	transition: 0.4s;
 }
+
+.custom-modal .ant-modal {
+	border-radius: 0 !important;
+}
+
+.custom-modal .ant-modal-content {
+	border-radius: 0 !important;
+}
