@@ -2,11 +2,15 @@
 
 import {AuthorizationComponent} from "@/components/authorization";
 import {routePaths} from "@/utils";
+import {useAuthStore, useInitAuth} from "@/utils/zustand";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
+import ProfileDropdownModal from "../profileModal";
 
 export const LayoutRoutes = () => {
 	const pathname = usePathname();
+	useInitAuth();
+	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
 	return (
 		<nav>
@@ -24,13 +28,17 @@ export const LayoutRoutes = () => {
 						{route.label}
 					</Link>
 				))}
-				<AuthorizationComponent
-					trigger={
-						<div className="py-2 px-8 rounded-full text-[0.9em] bg-primary text-white cursor-pointer max-[830px]:hidden">
-							Войти
-						</div>
-					}
-				/>
+				{isLoggedIn ? (
+					<ProfileDropdownModal />
+				) : (
+					<AuthorizationComponent
+						trigger={
+							<div className="py-2 px-8 rounded-full text-[0.9em] bg-primary text-white cursor-pointer max-[830px]:hidden">
+								Войти
+							</div>
+						}
+					/>
+				)}
 				<div className="py-2 px-8 rounded-full text-[0.9em] bg-primary text-white cursor-pointer max-[830px]:hidden">
 					Написать отзыв
 				</div>

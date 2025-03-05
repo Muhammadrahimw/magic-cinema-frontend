@@ -34,7 +34,7 @@ export const AuthorizationComponent = ({
 				footer={null}
 				open={isModalOpen}
 				onCancel={handleCancel}
-				className="custom-modal">
+				className="custom-modal max-sm:!text-xs">
 				<div className="flex justify-center space-x-4 border-b pb-2">
 					<button
 						type="button"
@@ -54,12 +54,16 @@ export const AuthorizationComponent = ({
 								: "text-gray-500"
 						}`}
 						onClick={() => setActiveTab("register")}>
-						Регистрация
+						Register
 					</button>
 				</div>
 
 				<div className="p-4">
-					{activeTab === "login" ? <LoginSection /> : <RegisterSection />}
+					{activeTab === "login" ? (
+						<LoginSection closeModal={handleCancel} />
+					) : (
+						<RegisterSection closeModal={handleCancel} />
+					)}
 				</div>
 			</Modal>
 		</>
