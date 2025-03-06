@@ -2,10 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import {PiInstagramLogo} from "react-icons/pi";
 import React from "react";
-import {Carousel} from "antd";
 import {HeaderMenu} from "./menu";
 import {LayoutRoutes} from "./routes";
 import {AuthorizationComponent} from "@/components/authorization";
+import {HeaderLoginItem} from "./headerLogin-item";
 
 const showcaseImageUrl = `https://s3-alpha-sig.figma.com/img/61ae/e255/4806cefb0060287f42f1e7ad54f40421?Expires=1742169600&Key-Pair-Id=APKAQ4GOSFWCW27IBOMQ&Signature=Ibwon9jPg3i47MNCXZImX7rKejXWJEMHkwY6REFEJWuUEFjEof~yw6m2dopuiuqLfgxyB-OD9jyRAK83X9lufu5LPcIoiSOETSK29bH8IxkNcVYgeYfxB0Ye-ngX9k7R2XpOBX5~oswnJFm2Av~2DQ9cgOCq012f6NiOpXHEORSygV7E39AALJDzY5pCGQpn43a2eBr9VUfyVh5vkZBkp3HifRSpiUYGoAc0vxlL6-0Se7mpRCQgtJu1Kv9L4d84hJi2Od6wliU6emAPc8vB9Ud6dp3HACfqpsHItGK-nD~AIhpojWT6nt54Okgn6SiZrgPYUUyVLKf02D7Et8fYMw__`;
 
@@ -34,7 +34,7 @@ export const HeaderComponent = () => {
 							ул. Бабура, 174
 						</p>
 					</Link>
-					<div className=" max-[830px]:hidden">
+					<div className="max-[830px]:hidden">
 						<a className="text-white font-medium" href={`tel:+998712052050`}>
 							+998(71) 2052050
 						</a>
@@ -42,13 +42,7 @@ export const HeaderComponent = () => {
 					</div>
 				</div>
 				<div className="flex items-center gap-6">
-					<AuthorizationComponent
-						trigger={
-							<div className="py-2 px-5 rounded-full text-[0.9em] bg-primary text-white cursor-pointer hidden max-[830px]:block">
-								Войти
-							</div>
-						}
-					/>
+					<HeaderLoginItem />
 					<HeaderMenu />
 					<div className="w-8 h-8 rounded-full flex hover:bg-primary cursor-pointer items-center justify-center bg-[rgb(168,173,175)] max-[830px]:hidden">
 						<Link

@@ -3,6 +3,7 @@ import "./globals.css";
 import {Inter} from "next/font/google";
 import {HeaderComponent} from "@/components/header";
 import {FooterComponent} from "@/components/footer";
+import {ModalProvider} from "@/context/ModalContext";
 
 const inter = Inter({
 	subsets: ["latin"],
@@ -23,9 +24,11 @@ export default function RootLayout({
 	return (
 		<html lang="en">
 			<body className={`${inter.className} antialiased`}>
-				<HeaderComponent />
-				{children}
-				<FooterComponent />
+				<ModalProvider>
+					<HeaderComponent />
+					{children}
+					<FooterComponent />
+				</ModalProvider>
 			</body>
 		</html>
 	);

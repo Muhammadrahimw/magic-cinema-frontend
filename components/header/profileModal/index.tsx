@@ -7,6 +7,7 @@ import {useNotification} from "@/components/alertMessages";
 import {signOut} from "next-auth/react";
 import {LoadingOutlined} from "@ant-design/icons";
 import OrderCard from "./orderCard";
+import {useSessionsStore} from "@/utils/sessionStore-zustand";
 
 const ProfileDropdownModal = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,8 @@ const ProfileDropdownModal = () => {
 	const {showNotification} = useNotification();
 	const [orderLoading, setOrderLoading] = useState(true);
 	const [orderList, setOrderList] = useState([]);
+	const needRefresh = useSessionsStore((state) => state.needRefresh);
+	const setNeedRefresh = useSessionsStore((state) => state.setNeedRefresh);
 
 	// user ma'lumotlari
 	const [userInfo, setUserInfo] = useState(() =>
@@ -187,15 +190,17 @@ const ProfileDropdownModal = () => {
 			headers: {Authorization: `Bearer ${localStorage.getItem(`token`)}`},
 		})
 			.then((response) => {
-				// console.log(response);
 				setOrderList(response.data);
 				setOrderLoading(false);
+				if (needRefresh) {
+					setNeedRefresh(false);
+				}
 			})
 			.catch((error) => {
 				setOrderLoading(false);
 				console.log(error);
 			});
-	}, []);
+	}, [needRefresh]);
 
 	const menuItems: MenuProps["items"] = [
 		{
@@ -221,7 +226,7 @@ const ProfileDropdownModal = () => {
 			<Dropdown menu={{items: menuItems}} trigger={["click"]}>
 				<button
 					type="button"
-					className="py-2 px-8 rounded-full text-[0.9em] bg-primary text-white cursor-pointer max-[830px]:hidden">
+					className="py-2 px-8 rounded-full text-[0.9em] bg-primary text-white cursor-pointer">
 					Профиль
 				</button>
 			</Dropdown>

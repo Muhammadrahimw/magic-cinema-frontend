@@ -13,3 +13,17 @@ export const BaseSessionSkeleton = () => {
 		</div>
 	);
 };
+
+export const SessionSleleton = () => {
+	return (
+		<div>
+			{Array.from({length: 10}).map((_, idx) => (
+				<Skeleton.Input
+					key={idx}
+					className="!w-full !h-[8.5em] rounded-sm"
+					active
+				/>
+			))}
+		</div>
+	);
+};

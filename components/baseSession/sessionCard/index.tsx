@@ -1,3 +1,4 @@
+import {useModal} from "@/context/ModalContext";
 import Image from "next/image";
 
 export interface sessionCardType {
@@ -24,6 +25,7 @@ export interface sessionCardType {
 }
 
 export const SessionCard = ({session}: {session: sessionCardType}) => {
+	const {openModal} = useModal();
 	return (
 		<div>
 			<Image
@@ -52,7 +54,10 @@ export const SessionCard = ({session}: {session: sessionCardType}) => {
 			</div>
 			<div className="w-full flex items-center gap-2 mt-3">
 				{session.time.map((time, idx) => (
-					<div key={idx} className="bg-primary px-2 py-1 rounded">
+					<div
+						onClick={() => openModal(session)}
+						key={idx}
+						className="bg-primary px-2 py-1 rounded cursor-pointer">
 						<p className="font-light text-sm text-white">{time}</p>
 					</div>
 				))}

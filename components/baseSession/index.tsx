@@ -40,16 +40,20 @@ export const BaseSessionComponent = () => {
 		<>
 			<div className="w-full bg-[#F2F2F5] px-8 py-2 flex items-center gap-4">
 				<p
-					onClick={() => setFilter(`today`)}
-					className={`py-2 px-5 rounded-full text-[0.9em] bg-primary text-white tr cursor-pointer ${
-						filter !== `today` ? `bg-white text-black border` : `bg-primary`
+					onClick={() => setFilter("today")}
+					className={`py-2 px-5 rounded-full text-[0.9em] tr cursor-pointer ${
+						filter === "today"
+							? "bg-primary text-white"
+							: "bg-white text-black border"
 					}`}>
 					Сегодня
 				</p>
 				<p
-					onClick={() => setFilter(`tomorrow`)}
-					className={`py-2 px-5 rounded-full text-[0.9em] bg-primary text-white tr cursor-pointer ${
-						filter !== `tomorrow` ? `bg-white text-black border` : `bg-primary`
+					onClick={() => setFilter("tomorrow")}
+					className={`py-2 px-5 rounded-full text-[0.9em] tr cursor-pointer ${
+						filter === "tomorrow"
+							? "bg-primary text-white"
+							: "bg-white text-black border"
 					}`}>
 					Завтра
 				</p>
