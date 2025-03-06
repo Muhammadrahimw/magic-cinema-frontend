@@ -1,9 +1,11 @@
 "use client";
 
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import {Dropdown, MenuProps, Button, Modal, Input} from "antd";
 import {useFetchFunc} from "@/hooks/axios";
 import {useNotification} from "@/components/alertMessages";
+import {signOut} from "next-auth/react";
+import {LoadingOutlined} from "@ant-design/icons";
 
 const ProfileDropdownModal = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -11,31 +13,56 @@ const ProfileDropdownModal = () => {
 	const {showNotification} = useNotification();
 
 	// user ma'lumotlari
-	const userInfo = JSON.parse(localStorage.getItem(`userInfo`) || "");
+	const [userInfo, setUserInfo] = useState(() =>
+		JSON.parse(localStorage.getItem(`userInfo`) || "{}")
+	);
 	const axios = useFetchFunc();
-	console.log(userInfo);
 
 	// User ma'lumotlari
-	const [firstName, setFirstName] = useState(userInfo.firstName);
-	const [lastName, setLastName] = useState(userInfo.lastName);
-	const [birthDate, setBirthDate] = useState(userInfo.birthday);
+	const [firstName, setFirstName] = useState(userInfo.firstName || "");
+	const [lastName, setLastName] = useState(userInfo.lastName || "");
+	const [birthDate, setBirthDate] = useState(userInfo.birthday || "");
+	const [infoLoading, setInfoLoading] = useState(false);
 
 	// O'zgarishlarni kuzatish uchun
-	const [originalFirstName] = useState(firstName);
-	const [originalLastName] = useState(lastName);
-	const [originalBirthDate] = useState(birthDate);
+	const [originalFirstName, setOriginalFirstName] = useState(firstName);
+	const [originalLastName, setOriginalLastName] = useState(lastName);
+	const [originalBirthDate, setOriginalBirthDate] = useState(birthDate);
 
+	// Email va parol uchun state
+	const [email, setEmail] = useState(userInfo.email || "");
+	const [isEmailEditable, setIsEmailEditable] = useState(false);
+	const [emailLoading, setEmailLoading] = useState(false);
+
+	// Parol uchun state
+	const [oldPassword, setOldPassword] = useState("");
+	const [newPassword, setNewPassword] = useState("");
+	const [isPasswordEditable, setIsPasswordEditable] = useState(false);
+	const [passLoading, setPassLoading] = useState(false);
+
+	// Ma'lumotlar o'zgarganmi tekshirish
 	const hasChanges =
 		firstName !== originalFirstName ||
 		lastName !== originalLastName ||
 		birthDate !== originalBirthDate;
 
-	// Email va parol uchun state
-	const [email, setEmail] = useState(userInfo.email);
-	const [isEmailEditable, setIsEmailEditable] = useState(false);
+	// UserInfo o'zgarsa state'larni yangilash
+	useEffect(() => {
+		const currentUserInfo = JSON.parse(
+			localStorage.getItem(`userInfo`) || "{}"
+		);
+		setUserInfo(currentUserInfo);
 
-	const [password, setPassword] = useState("");
-	const [isPasswordEditable, setIsPasswordEditable] = useState(false);
+		setFirstName(currentUserInfo.firstName || "");
+		setLastName(currentUserInfo.lastName || "");
+		setBirthDate(currentUserInfo.birthday || "");
+
+		setOriginalFirstName(currentUserInfo.firstName || "");
+		setOriginalLastName(currentUserInfo.lastName || "");
+		setOriginalBirthDate(currentUserInfo.birthday || "");
+
+		setEmail(currentUserInfo.email || "");
+	}, []);
 
 	// Modal ochish
 	const openModal = (title: string) => {
@@ -45,27 +72,39 @@ const ProfileDropdownModal = () => {
 
 	// Ma'lumotlarni saqlash
 	const saveUserInfo = async () => {
+		setInfoLoading(true);
 		axios({
 			url: `/auth/change-info`,
 			method: "PUT",
-			body: {firstName, lastName, birthDate},
+			body: {firstName, lastName, birthday: birthDate},
 			headers: {Authorization: `Bearer ${localStorage.getItem(`token`)}`},
 		})
 			.then((response) => {
 				console.log(response);
-				// if (response.ok)
+				setInfoLoading(false);
 				showNotification({message: response.message, type: "success"});
+
+				// LocalStorage yangilash
 				localStorage.setItem(`userInfo`, JSON.stringify(response.data));
+
+				// Original qiymatlarni yangilash
+				setOriginalFirstName(firstName);
+				setOriginalLastName(lastName);
+				setOriginalBirthDate(birthDate);
+
+				// UserInfo state'ni yangilash
+				setUserInfo(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
-				showNotification({message: `Something wet wrong`, type: "error"});
+				setInfoLoading(false);
+				showNotification({message: `Something went wrong`, type: "error"});
 			});
 	};
 
 	const saveEmail = () => {
-		console.log("Yangi Email:", email);
 		if (userInfo.email !== email) {
+			setEmailLoading(true);
 			axios({
 				url: `/auth/change-email`,
 				method: "POST",
@@ -75,21 +114,65 @@ const ProfileDropdownModal = () => {
 				.then((response) => {
 					console.log(response);
 					if (response.status === 200) {
+						setEmailLoading(false);
 						showNotification({message: response.message, type: "success"});
+						const updatedUserInfo = {...userInfo, email: email};
+						localStorage.setItem(`userInfo`, JSON.stringify(updatedUserInfo));
+						setUserInfo(updatedUserInfo);
 					} else {
+						setEmailLoading(false);
 						showNotification({message: response.message, type: "warning"});
 					}
 				})
 				.catch((error) => {
 					console.log(error);
-					showNotification({message: `Something wet wrong`, type: "error"});
+					setEmailLoading(false);
+					showNotification({message: `Something went wrong`, type: "error"});
 				});
 		}
 		setIsEmailEditable(false);
 	};
 
 	const savePassword = () => {
-		console.log("Yangi Parol:", password);
+		if (oldPassword && newPassword) {
+			setPassLoading(true);
+			axios({
+				url: `/auth/change-password`,
+				method: "PUT",
+				body: {oldPassword, newPassword},
+				headers: {Authorization: `Bearer ${localStorage.getItem(`token`)}`},
+			})
+				.then((response) => {
+					if (response.status === 200) {
+						showNotification({
+							message: response.message || "Password updated successfully",
+							type: "success",
+						});
+					} else {
+						showNotification({
+							message: response.message,
+							type: "warning",
+						});
+					}
+					setPassLoading(false);
+					setOldPassword("");
+					setNewPassword("");
+				})
+				.catch((error) => {
+					console.log(error);
+					setPassLoading(false);
+					showNotification({
+						message: error?.message || `Something went wrong`,
+						type: "error",
+					});
+				});
+		} else {
+			showNotification({
+				message: `Please fill all password fields`,
+				type: "warning",
+			});
+			return;
+		}
 		setIsPasswordEditable(false);
 	};
 
@@ -129,7 +212,7 @@ const ProfileDropdownModal = () => {
 				footer={null}>
 				{modalTitle === "Профиль" && (
 					<div>
-						{/* Ism, Familiya, Tug‘ilgan sana */}
+						{/* Ism, Familiya, Tug'ilgan sana */}
 						<Input
 							type="text"
 							placeholder="Имя"
@@ -147,7 +230,7 @@ const ProfileDropdownModal = () => {
 						<Input
 							type="date"
 							placeholder="День рождения"
-							value={birthDate}
+							value={birthDate.split("T")[0]}
 							onChange={(e) => setBirthDate(e.target.value)}
 							className="rounded-md py-3 mb-3"
 						/>
@@ -158,7 +241,7 @@ const ProfileDropdownModal = () => {
 							className={`w-full h-[3.25em] rounded-md mt-2 bg-gray-200 text-gray-800 ${
 								!hasChanges ? "opacity-50 cursor-not-allowed" : ""
 							}`}>
-							Сохранить данные
+							{infoLoading ? <LoadingOutlined /> : `Сохранить`}
 						</Button>
 
 						{/* Email Input */}
@@ -176,18 +259,31 @@ const ProfileDropdownModal = () => {
 								isEmailEditable ? saveEmail : () => setIsEmailEditable(true)
 							}
 							className="w-full h-[3.25em] rounded-md mt-2 bg-gray-200 text-gray-800">
-							{isEmailEditable ? "Сохранить Email" : "Изменить Email"}
+							{isEmailEditable ? (
+								"Сохранить Email"
+							) : (
+								<p>{emailLoading ? <LoadingOutlined /> : `Изменить Email`}</p>
+							)}
 						</Button>
 
 						{/* Parol Input */}
 						{isPasswordEditable && (
-							<Input
-								type="password"
-								placeholder="Новый пароль"
-								value={password}
-								onChange={(e) => setPassword(e.target.value)}
-								className="rounded-md py-3 mb-3 mt-3"
-							/>
+							<>
+								<Input
+									type="password"
+									placeholder="Текущий пароль"
+									value={oldPassword}
+									onChange={(e) => setOldPassword(e.target.value)}
+									className="rounded-md py-3 mb-3 mt-3"
+								/>
+								<Input
+									type="password"
+									placeholder="Новый пароль"
+									value={newPassword}
+									onChange={(e) => setNewPassword(e.target.value)}
+									className="rounded-md py-3 mb-3"
+								/>
+							</>
 						)}
 						<Button
 							onClick={
@@ -196,7 +292,17 @@ const ProfileDropdownModal = () => {
 									: () => setIsPasswordEditable(true)
 							}
 							className="w-full h-[3.25em] rounded-md mt-2 bg-gray-200 text-gray-800">
-							{isPasswordEditable ? "Сохранить Пароль" : "Изменить Пароль"}
+							{isPasswordEditable ? (
+								<p>Сохранить Пароль</p>
+							) : (
+								<p>
+									{passLoading ? (
+										<LoadingOutlined className="text-xl" />
+									) : (
+										`Изменить Пароль`
+									)}
+								</p>
+							)}
 						</Button>
 					</div>
 				)}
@@ -210,7 +316,15 @@ const ProfileDropdownModal = () => {
 				{modalTitle === "Выйти" && (
 					<div>
 						<p>Вы уверены, что хотите выйти?</p>
-						<Button type="primary" danger onClick={() => console.log("Logout")}>
+						<Button
+							type="primary"
+							danger
+							onClick={() => {
+								signOut();
+								localStorage.removeItem("token");
+								localStorage.removeItem("userInfo");
+								window.location.href = "/";
+							}}>
 							Выйти
 						</Button>
 					</div>
