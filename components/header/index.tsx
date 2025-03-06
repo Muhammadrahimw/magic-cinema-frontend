@@ -11,7 +11,7 @@ const showcaseImageUrl = `https://s3-alpha-sig.figma.com/img/61ae/e255/4806cefb0
 
 export const HeaderComponent = () => {
 	return (
-		<header className="pb-[20em]">
+		<header>
 			<nav className="bg-[#263238] px-8 py-3 flex items-center justify-between gap-4 max-[360px]:text-xs">
 				<div className="flex items-center gap-12">
 					<Link href={`/`}>
@@ -65,7 +65,7 @@ export const HeaderComponent = () => {
 				</div>
 			</nav>
 			<nav>
-				<Carousel arrows infinite={false}>
+				{/* <Carousel arrows infinite={false}>
 					{Array.from({length: 4}).map((_, idx) => (
 						<div key={idx} className="bg-[#364d79] m-0 h-[70%] text-[#fff]">
 							<Image
@@ -78,17 +78,9 @@ export const HeaderComponent = () => {
 							/>
 						</div>
 					))}
-				</Carousel>
+				</Carousel> */}
 			</nav>
 			<LayoutRoutes />
-			<nav className="w-full bg-[#F2F2F5] px-8 py-2 flex items-center gap-4">
-				<p className="py-2 px-5 rounded-full text-[0.9em] bg-primary text-white cursor-pointer">
-					Сегодня
-				</p>
-				<p className="py-2 px-5 rounded-full text-[0.9em] bg-primary text-white cursor-pointer">
-					Завтра
-				</p>
-			</nav>
 		</header>
 	);
 };

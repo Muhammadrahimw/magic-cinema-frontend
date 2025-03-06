@@ -1,7 +1,6 @@
 import type {Metadata} from "next";
 import "./globals.css";
 import {Inter} from "next/font/google";
-import Providers from "@/providers";
 import {HeaderComponent} from "@/components/header";
 import {FooterComponent} from "@/components/footer";
 
@@ -25,7 +24,7 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={`${inter.className} antialiased`}>
 				<HeaderComponent />
-				<Providers>{children}</Providers>
+				{children}
 				<FooterComponent />
 			</body>
 		</html>

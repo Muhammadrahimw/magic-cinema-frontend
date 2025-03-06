@@ -1,5 +1,11 @@
+import {BaseSessionComponent} from "@/components/baseSession";
+
 const Home = () => {
-	return <div>Home</div>;
+	return (
+		<section>
+			<BaseSessionComponent />
+		</section>
+	);
 };
 
 export default Home;

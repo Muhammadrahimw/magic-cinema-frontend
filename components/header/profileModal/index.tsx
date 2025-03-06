@@ -6,11 +6,14 @@ import {useFetchFunc} from "@/hooks/axios";
 import {useNotification} from "@/components/alertMessages";
 import {signOut} from "next-auth/react";
 import {LoadingOutlined} from "@ant-design/icons";
+import OrderCard from "./orderCard";
 
 const ProfileDropdownModal = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [modalTitle, setModalTitle] = useState("");
 	const {showNotification} = useNotification();
+	const [orderLoading, setOrderLoading] = useState(true);
+	const [orderList, setOrderList] = useState([]);
 
 	// user ma'lumotlari
 	const [userInfo, setUserInfo] = useState(() =>
@@ -176,6 +179,24 @@ const ProfileDropdownModal = () => {
 		setIsPasswordEditable(false);
 	};
 
+	// orders
+
+	useEffect(() => {
+		axios({
+			url: `/auth/get-order`,
+			headers: {Authorization: `Bearer ${localStorage.getItem(`token`)}`},
+		})
+			.then((response) => {
+				// console.log(response);
+				setOrderList(response.data);
+				setOrderLoading(false);
+			})
+			.catch((error) => {
+				setOrderLoading(false);
+				console.log(error);
+			});
+	}, []);
+
 	const menuItems: MenuProps["items"] = [
 		{
 			key: "1",
@@ -212,7 +233,6 @@ const ProfileDropdownModal = () => {
 				footer={null}>
 				{modalTitle === "Профиль" && (
 					<div>
-						{/* Ism, Familiya, Tug'ilgan sana */}
 						<Input
 							type="text"
 							placeholder="Имя"
@@ -309,7 +329,9 @@ const ProfileDropdownModal = () => {
 
 				{modalTitle === "Мои заказы" && (
 					<div>
-						<p>Этот раздел будет отображать заказы пользователя...</p>
+						{orderList?.map((order, idx) => (
+							<OrderCard key={idx} order={order} />
+						))}
 					</div>
 				)}
 
@@ -319,6 +341,7 @@ const ProfileDropdownModal = () => {
 						<Button
 							type="primary"
 							danger
+							className="mt-5"
 							onClick={() => {
 								signOut();
 								localStorage.removeItem("token");

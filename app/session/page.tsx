@@ -1,5 +1,11 @@
+import {SessionsComponent} from "@/components/sessions";
+
 const Session = () => {
-	return <div>Session</div>;
+	return (
+		<div>
+			<SessionsComponent />
+		</div>
+	);
 };
 
 export default Session;
