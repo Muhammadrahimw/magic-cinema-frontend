@@ -15,7 +15,7 @@ export const LayoutRoutes = () => {
 
 	return (
 		<nav>
-			<div className="px-8 flex items-center gap-6 border-b border-gray-300 max-[560px]:overflow-x-auto max-[560px]:whitespace-nowrap">
+			<div className="px-8 flex items-center gap-6 border-b border-gray-300 max-[560px]:overflow-x-auto max-[560px]:whitespace-nowrap max-[900px]:gap-3 max-[830px]:gap-6">
 				{routePaths.map((route, idx) => (
 					<Link
 						href={route.path}

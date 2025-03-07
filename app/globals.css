@@ -48,6 +48,20 @@ body {
 	border-radius: 0 !important;
 }
 
+.mapContainer {
+	width: 100%;
+	height: 20em;
+	overflow: hidden;
+	border-radius: 8px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.mapImage {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
 @media (max-width: 640px) {
 	.ant-modal-content {
 		padding: 10px !important;

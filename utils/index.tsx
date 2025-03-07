@@ -15,4 +15,8 @@ export const routePaths = [
 		path: `cinema`,
 		label: `Кинотеатр`,
 	},
+	{
+		path: `contact`,
+		label: `Контакты`,
+	},
 ];
