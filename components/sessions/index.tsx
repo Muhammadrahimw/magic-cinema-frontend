@@ -71,7 +71,7 @@ export const SessionsComponent = () => {
 					Завтра
 				</p>
 			</div>
-			<div className="p-2">
+			<div className="p-2 max-[360px]:text-xs">
 				{loading ? (
 					<SessionSleleton />
 				) : (

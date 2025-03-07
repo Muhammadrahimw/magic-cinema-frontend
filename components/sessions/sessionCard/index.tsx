@@ -8,7 +8,7 @@ export const SessionRawCard = ({session}: {session: sessionCardType}) => {
 		<div
 			onClick={() => openModal(session)}
 			className="flex items-start gap-4 border-b pb-5 pt-2 hover:bg-[#f8f8f8] cursor-pointer rounded-sm px-3">
-			<div className="rounded bg-primary text-white mt-2 w-[5em] py-2 flex items-center justify-center">
+			<div className="rounded bg-primary text-white mt-2 min-w-[5em] py-2 flex items-center justify-center">
 				<p className="text-[1.15em]">{session?.time}</p>
 			</div>
 			<div>

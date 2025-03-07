@@ -1,4 +1,4 @@
-import {Input} from "antd";
+import {Input, message} from "antd";
 import {signIn} from "next-auth/react";
 import {useRef, useState} from "react";
 import {useForm, Controller} from "react-hook-form";
@@ -84,7 +84,7 @@ export const LoginSection = ({closeModal}: LoginSectionProps) => {
 
 			const backendData = await backendResponse.json();
 
-			if (backendResponse.ok) {
+			if (backendData.message === `Verify link sent to your email`) {
 				showNotification({message: backendData.message, type: "success"});
 				setForgotStatus(false);
 				setLoading(false);

@@ -33,7 +33,15 @@ export default function SendSms() {
 					if (response.status === 201) {
 						showNotification({message: response.message, type: "success"});
 					} else {
-						showNotification({message: response.message, type: "warning"});
+						console.log(response.message);
+						if (response.message === `Invalid token`) {
+							showNotification({
+								message: `Please login before sending message`,
+								type: "warning",
+							});
+						} else {
+							showNotification({message: response.message, type: "warning"});
+						}
 					}
 				})
 				.catch((error) => console.log(error));
@@ -43,11 +51,11 @@ export default function SendSms() {
 	};
 
 	return (
-		<div className="p-5">
+		<div className="p-5 px-0">
 			<Button
 				type="primary"
 				onClick={showModal}
-				className="!h-11 px-8 rounded-full bg-primary text-white cursor-pointer max-[830px]:hidden">
+				className="!h-11 px-8 rounded-full font-medium bg-primary text-white cursor-pointer max-[830px]:">
 				Написать отзыв
 			</Button>
 

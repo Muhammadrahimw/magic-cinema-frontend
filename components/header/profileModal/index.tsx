@@ -8,6 +8,7 @@ import {signOut} from "next-auth/react";
 import {LoadingOutlined} from "@ant-design/icons";
 import OrderCard from "./orderCard";
 import {useSessionsStore} from "@/utils/sessionStore-zustand";
+import {useAuthStore} from "@/utils/zustand";
 
 const ProfileDropdownModal = () => {
 	const [isOpen, setIsOpen] = useState(false);
@@ -17,42 +18,36 @@ const ProfileDropdownModal = () => {
 	const [orderList, setOrderList] = useState([]);
 	const needRefresh = useSessionsStore((state) => state.needRefresh);
 	const setNeedRefresh = useSessionsStore((state) => state.setNeedRefresh);
+	const setLoggedIn = useAuthStore((state) => state.setLoggedIn);
 
-	// user ma'lumotlari
 	const [userInfo, setUserInfo] = useState(() =>
 		JSON.parse(localStorage.getItem(`userInfo`) || "{}")
 	);
 	const axios = useFetchFunc();
 
-	// User ma'lumotlari
 	const [firstName, setFirstName] = useState(userInfo.firstName || "");
 	const [lastName, setLastName] = useState(userInfo.lastName || "");
 	const [birthDate, setBirthDate] = useState(userInfo.birthday || "");
 	const [infoLoading, setInfoLoading] = useState(false);
 
-	// O'zgarishlarni kuzatish uchun
 	const [originalFirstName, setOriginalFirstName] = useState(firstName);
 	const [originalLastName, setOriginalLastName] = useState(lastName);
 	const [originalBirthDate, setOriginalBirthDate] = useState(birthDate);
 
-	// Email va parol uchun state
 	const [email, setEmail] = useState(userInfo.email || "");
 	const [isEmailEditable, setIsEmailEditable] = useState(false);
 	const [emailLoading, setEmailLoading] = useState(false);
 
-	// Parol uchun state
 	const [oldPassword, setOldPassword] = useState("");
 	const [newPassword, setNewPassword] = useState("");
 	const [isPasswordEditable, setIsPasswordEditable] = useState(false);
 	const [passLoading, setPassLoading] = useState(false);
 
-	// Ma'lumotlar o'zgarganmi tekshirish
 	const hasChanges =
 		firstName !== originalFirstName ||
 		lastName !== originalLastName ||
 		birthDate !== originalBirthDate;
 
-	// UserInfo o'zgarsa state'larni yangilash
 	useEffect(() => {
 		const currentUserInfo = JSON.parse(
 			localStorage.getItem(`userInfo`) || "{}"
@@ -70,13 +65,11 @@ const ProfileDropdownModal = () => {
 		setEmail(currentUserInfo.email || "");
 	}, []);
 
-	// Modal ochish
 	const openModal = (title: string) => {
 		setModalTitle(title);
 		setIsOpen(true);
 	};
 
-	// Ma'lumotlarni saqlash
 	const saveUserInfo = async () => {
 		setInfoLoading(true);
 		axios({
@@ -90,15 +83,12 @@ const ProfileDropdownModal = () => {
 				setInfoLoading(false);
 				showNotification({message: response.message, type: "success"});
 
-				// LocalStorage yangilash
 				localStorage.setItem(`userInfo`, JSON.stringify(response.data));
 
-				// Original qiymatlarni yangilash
 				setOriginalFirstName(firstName);
 				setOriginalLastName(lastName);
 				setOriginalBirthDate(birthDate);
 
-				// UserInfo state'ni yangilash
 				setUserInfo(response.data);
 			})
 			.catch((error) => {
@@ -192,10 +182,12 @@ const ProfileDropdownModal = () => {
 			.then((response) => {
 				setOrderList(response.data);
 				setOrderLoading(false);
-				if (response.message === `jwt expired`) {
+				if (response.status === 401) {
 					// signOut();
+					setLoggedIn(false);
 					localStorage.removeItem("token");
 					localStorage.removeItem("userInfo");
+					showNotification({message: response.message, type: "warning"});
 				}
 
 				if (needRefresh) {
@@ -204,7 +196,6 @@ const ProfileDropdownModal = () => {
 			})
 			.catch((error) => {
 				setOrderLoading(false);
-				console.log(error);
 			});
 	}, [needRefresh]);
 
@@ -297,7 +288,6 @@ const ProfileDropdownModal = () => {
 							)}
 						</Button>
 
-						{/* Parol Input */}
 						{isPasswordEditable && (
 							<>
 								<Input

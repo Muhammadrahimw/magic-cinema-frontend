@@ -4,6 +4,7 @@ import Link from "next/link";
 import {useState} from "react";
 import {FaBars} from "react-icons/fa";
 import {FaXmark} from "react-icons/fa6";
+import SendSms from "../send-sms";
 
 export const HeaderMenu = () => {
 	const [active, setActive] = useState<boolean>(false);
@@ -38,9 +39,7 @@ export const HeaderMenu = () => {
 					<p className="font-light text-xs text-gray-300">Для Информации</p>
 				</div>
 				<div className="max-[830px]:flex hidden flex-col gap-4 mt-4 text-xs">
-					<div className="py-2 rounded-full text-[0.9em] bg-primary text-white cursor-pointer flex justify-center w-[10.5em]">
-						Написать отзыв
-					</div>
+					<SendSms />
 					<Link
 						href={`https://kinokassa.ru/refund?cinemaID=8211`}
 						target="_blank"

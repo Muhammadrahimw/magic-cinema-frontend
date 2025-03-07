@@ -8,6 +8,7 @@ const nextConfig = {
 			"media.themoviedb.org",
 			"s2ru1.kinoplan24.ru",
 			"s1ru1.kinoplan24.ru",
+			`kinoplan.io`,
 		],
 	},
 };

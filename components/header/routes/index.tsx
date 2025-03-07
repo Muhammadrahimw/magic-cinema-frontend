@@ -15,12 +15,12 @@ export const LayoutRoutes = () => {
 
 	return (
 		<nav>
-			<div className="px-8 py-4 flex items-center gap-6 border-b border-gray-300 max-[560px]:overflow-x-auto max-[560px]:whitespace-nowrap">
+			<div className="px-8 flex items-center gap-6 border-b border-gray-300 max-[560px]:overflow-x-auto max-[560px]:whitespace-nowrap">
 				{routePaths.map((route, idx) => (
 					<Link
 						href={route.path}
 						key={idx}
-						className={`cursor-pointer relative before:content-[''] before:w-full before:h-[4px] before:bg-primary before:absolute before:bottom-[-22px] ${
+						className={`cursor-pointer relative before:content-[''] before:w-full before:h-[4px] before:bg-primary before:absolute before:bottom-[-28px] max-[830px]:py-4 max-[830px]:before:bottom-[-1px] ${
 							(pathname === "/" && route.path === "/") ||
 							pathname.slice(1, 20) === route.path
 								? `before:scale-x-100`
@@ -42,7 +42,9 @@ export const LayoutRoutes = () => {
 						/>
 					)}
 				</div>
-				<SendSms />
+				<div className="max-[830px]:hidden">
+					<SendSms />
+				</div>
 			</div>
 		</nav>
 	);
