@@ -34,6 +34,7 @@ export const SessionCard = ({session}: {session: sessionCardType}) => {
 				width={300}
 				height={500}
 				className="w-full h-[27em] object-cover rounded-xl"
+				priority
 			/>
 			<p className="text-xl font-semibold mt-2">
 				{session.movieId.title?.slice(0, 20)}

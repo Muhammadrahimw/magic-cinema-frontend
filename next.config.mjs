@@ -6,7 +6,8 @@ const nextConfig = {
 			"posters.movieposterdb.com",
 			"th.bing.com",
 			"media.themoviedb.org",
-			"s2ru1.kinoplan24.ru"
+			"s2ru1.kinoplan24.ru",
+			"s1ru1.kinoplan24.ru",
 		],
 	},
 };
