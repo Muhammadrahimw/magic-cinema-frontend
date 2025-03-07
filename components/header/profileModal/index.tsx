@@ -192,6 +192,12 @@ const ProfileDropdownModal = () => {
 			.then((response) => {
 				setOrderList(response.data);
 				setOrderLoading(false);
+				if (response.message === `jwt expired`) {
+					// signOut();
+					localStorage.removeItem("token");
+					localStorage.removeItem("userInfo");
+				}
+
 				if (needRefresh) {
 					setNeedRefresh(false);
 				}

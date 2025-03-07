@@ -6,6 +6,7 @@ import {useAuthStore, useInitAuth} from "@/utils/zustand";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import ProfileDropdownModal from "../profileModal";
+import SendSms from "../send-sms";
 
 export const LayoutRoutes = () => {
 	const pathname = usePathname();
@@ -41,9 +42,7 @@ export const LayoutRoutes = () => {
 						/>
 					)}
 				</div>
-				<div className="py-2 px-8 rounded-full text-[0.9em] bg-primary text-white cursor-pointer max-[830px]:hidden">
-					Написать отзыв
-				</div>
+				<SendSms />
 			</div>
 		</nav>
 	);

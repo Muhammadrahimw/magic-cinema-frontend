@@ -1,5 +1,6 @@
 import {sessionCardType} from "@/components/baseSession/sessionCard";
 import {useModal} from "@/context/ModalContext";
+import Link from "next/link";
 
 export const SessionRawCard = ({session}: {session: sessionCardType}) => {
 	const {openModal} = useModal();
@@ -11,9 +12,11 @@ export const SessionRawCard = ({session}: {session: sessionCardType}) => {
 				<p className="text-[1.15em]">{session?.time}</p>
 			</div>
 			<div>
-				<div className="text-[1.15em] font-bold mt-1">
+				<Link
+					href={`/movie/${session._id}`}
+					className="text-[1.15em] font-bold mt-1">
 					{session.movieId.title}
-				</div>
+				</Link>
 				<div className="flex gap-2 mt-1 flex-wrap">
 					<div className="px-2 h-6 rounded bg-[#F2F2F5] flex items-center justify-center">
 						<p className="text-xs font-light text-gray-500">

@@ -1,5 +1,6 @@
 import {useModal} from "@/context/ModalContext";
 import Image from "next/image";
+import Link from "next/link";
 
 export interface sessionCardType {
 	_id: string;
@@ -36,9 +37,11 @@ export const SessionCard = ({session}: {session: sessionCardType}) => {
 				className="w-full h-[27em] object-cover rounded-xl"
 				priority
 			/>
-			<p className="text-xl font-semibold mt-2">
+			<Link
+				href={`/movie/${session._id}`}
+				className="text-xl font-semibold mt-2">
 				{session.movieId.title?.slice(0, 20)}
-			</p>
+			</Link>
 			<div className="flex gap-2 mt-3 flex-wrap">
 				<div className="px-2 h-6 rounded bg-[#F2F2F5] flex items-center justify-center">
 					<p className="text-xs font-light text-gray-500">
