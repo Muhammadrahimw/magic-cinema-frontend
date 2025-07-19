@@ -8,18 +8,17 @@ import {BaseSessionSkeleton} from "../loadings";
 
 export const ComingSoonComponent = () => {
 	const axios = useFetchFunc();
-	const [loading, setLoading] = useState<boolean>(true);
 	const [soonMovies, setSoonMovies] = useState<sessionCardItemType[]>([]);
 
 	useEffect(() => {
 		axios({url: `/movie/coming-soon`})
 			.then((response) => {
 				setSoonMovies(response.data);
-				setLoading(false);
 			})
 			.catch((error) => {
 				console.log(error);
 			});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 	return (
 		<div className="px-5 py-6 grid grid-cols-4 gap-4 max-[1150px]:text-sm max-lg:text-xs max-[830px]:grid-cols-3 max-[830px]:text-[0.9em] max-md:text-xs max-sm:grid-cols-2 max-sm:text-base max-[550px]:text-sm max-[480px]:text-[0.65em] max-[370px]:text-[0.5em] max-[320px]:text-[0.4em]">

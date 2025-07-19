@@ -13,3 +13,11 @@ export interface sessionCardItemType {
 	ageLimit: number;
 	comingSoon: boolean;
 }
+
+export interface CustomAxiosErrorResponse {
+	response?: {
+		data?: {
+			message?: string;
+		};
+	};
+}

@@ -23,6 +23,7 @@ export const MovieComponent = () => {
 				console.log(error);
 				setLoading(false);
 			});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	console.log(session);

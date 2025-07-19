@@ -10,7 +10,11 @@ export const BaseSessionSkeleton = () => {
 			/>
 			<div className="flex items-center gap-2 w-full max-sm:hidden">
 				{Array.from({length: 3}).map((_, index) => (
-					<Skeleton.Button active className="!w-20 rounded-xl mt-2" />
+					<Skeleton.Button
+						key={index}
+						active
+						className="!w-20 rounded-xl mt-2"
+					/>
 				))}
 			</div>
 		</div>

@@ -14,7 +14,6 @@ const ProfileDropdownModal = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const [modalTitle, setModalTitle] = useState("");
 	const {showNotification} = useNotification();
-	const [orderLoading, setOrderLoading] = useState(true);
 	const [orderList, setOrderList] = useState([]);
 	const needRefresh = useSessionsStore((state) => state.needRefresh);
 	const setNeedRefresh = useSessionsStore((state) => state.setNeedRefresh);
@@ -181,7 +180,7 @@ const ProfileDropdownModal = () => {
 		})
 			.then((response) => {
 				setOrderList(response.data);
-				setOrderLoading(false);
+				// setOrderLoading(false);
 				if (response.status === 401) {
 					// signOut();
 					setLoggedIn(false);
@@ -194,9 +193,11 @@ const ProfileDropdownModal = () => {
 					setNeedRefresh(false);
 				}
 			})
-			.catch((error) => {
-				setOrderLoading(false);
+			.catch((err) => {
+				console.log(err);
+				// setOrderLoading(false);
 			});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [needRefresh]);
 
 	const menuItems: MenuProps["items"] = [

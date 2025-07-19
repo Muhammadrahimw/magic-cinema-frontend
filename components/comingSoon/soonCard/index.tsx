@@ -1,9 +1,9 @@
 import {sessionCardItemType} from "@/@types";
-import {useModal} from "@/context/ModalContext";
+// import {useModal} from "@/context/ModalContext";
 import Image from "next/image";
 
 export const SoonCard = ({movie}: {movie: sessionCardItemType}) => {
-	const {openModal} = useModal();
+	// const {openModal} = useModal();
 	return (
 		<div>
 			<Image

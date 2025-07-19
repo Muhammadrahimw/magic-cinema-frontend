@@ -28,6 +28,7 @@ export const SessionsComponent = () => {
 				console.error(err);
 				setLoading(false);
 			});
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	useEffect(() => {
